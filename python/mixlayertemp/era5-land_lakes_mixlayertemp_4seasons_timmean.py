@@ -39,9 +39,9 @@ tick_font = 11
 #INITIALIZE
 #==============================================================================
 
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/mixlayertemp/timmean'
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/mixlayertemp/timmean'
 os.chdir(directory)
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/mixlayertemp'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 files = []
 for file in sorted(os.listdir(directory)):
@@ -90,7 +90,7 @@ f, axes = plt.subplots(2,2,figsize=(15,12));
 
 lon, lat = np.meshgrid(lon, lat)
 
-cmap_whole = plt.cm.get_cmap('Spectral')
+cmap_whole = plt.cm.get_cmap('viridis_r')
 cmap55 = cmap_whole(0.01)   
 cmap50 = cmap_whole(0.05)
 cmap45 = cmap_whole(0.1)
@@ -114,6 +114,10 @@ cmap_50 = cmap_whole(0.95)
 cmap_55 = cmap_whole(0.99)
 
 cmap = mpl.colors.ListedColormap([cmap_55,cmap_40,cmap_25,cmap_10,cmap10,cmap25,cmap40,cmap55], N=8)  
+
+values = [270,275,280,285,290,295,300,305,310]
+tick_locs = [270,275,280,285,290,295,300,305,310]
+norm = mpl.colors.BoundaryNorm(values,cmap.N)
 
 parallels = np.arange(-60.,91.,30.);
 meridians = np.arange(-135.,136.,45.);
@@ -145,16 +149,12 @@ for season,ax in zip(seasons,axes.flat):
     ax.spines['right'].set_color('0.2')
     ax.spines['right'].set_linewidth(0.4)
     ax.yaxis.label.set_color('0.2')
-    h = m.pcolormesh(lon, lat, season, latlon=True, cmap=cmap, vmin=270, vmax=310, zorder=2)
+    h = m.pcolormesh(lon, lat, season, latlon=True, cmap=cmap, norm=norm, vmin=270, vmax=310, zorder=2)
 
 #=============================================================================
 #PLOT
 #=============================================================================
 
-values = [270,275,280,285,290,295,300,305,310]
-tick_locs = [270,275,280,285,290,295,300,305,310]
-
-norm = mpl.colors.BoundaryNorm(values,cmap.N)
 cbaxes = f.add_axes([0.25, 0.15, 0.5, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes, cmap=cmap,
                                norm=norm,
@@ -174,7 +174,7 @@ plt.subplots_adjust(left=0.15, right=0.85, bottom=0.175, top=0.6, wspace=0.1, hs
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_mixlayertemp_4seasons.png',bbox_inches='tight',dpi=500)
+f.savefig(o_directory+'/'+'D511.N.n.x_ERA5-land_lakes_mixedlayertemperature_icedepth_Section_2.4.1_Figure_1.png',bbox_inches='tight',dpi=500)
 
 
 

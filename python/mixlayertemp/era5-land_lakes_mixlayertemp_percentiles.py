@@ -50,9 +50,9 @@ tick_font = 11
 #INITIALIZE
 #==============================================================================
 
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/mixlayertemp/percentiles'
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/mixlayertemp/percentiles'
 os.chdir(directory)
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/mixlayertemp'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 files = []
 for file in sorted(os.listdir(directory)):
@@ -68,13 +68,31 @@ sample_da,dead1,dead2 = reader(files[0])
 lat = sample_da.latitude.values
 lon = sample_da.longitude.values
 
-perc1,mean1,std1 = reader(files[0])
-perc5,mean5,std5 = reader(files[2])
-perc10,mean10,std10 = reader(files[1])
-perc50,mean50,std50 = reader(files[3])
-perc90,mean90,std90 = reader(files[4])
-perc95,mean95,std95 = reader(files[5])
-perc99,mean99,std99 = reader(files[6])
+percs = ['_1_','_5_','_10_','_50_','_90_','_95_','_99_']
+
+for file in files:
+    for perc in percs:
+        if perc == '_1_':
+            if perc in file:
+                perc1,mean1,std1 = reader(file)
+        elif perc == '_5_':
+            if perc in file:
+                perc5,mean5,std5 = reader(file)    
+        elif perc == '_10_':
+            if perc in file:
+                perc10,mean10,std10 = reader(file)
+        elif perc == '_50_':
+            if perc in file:
+                perc50,mean50,std50 = reader(file)
+        elif perc == '_90_':
+            if perc in file:
+                perc90,mean90,std90 = reader(file)
+        elif perc == '_95_':
+            if perc in file:
+                perc95,mean95,std95 = reader(file)
+        elif perc == '_99_':
+            if perc in file:
+                perc99,mean99,std99 = reader(file)
 
 letters = ['a)','b)','c)','d)','e)','f)','g)']
 
@@ -93,7 +111,7 @@ f, axes = plt.subplots(3,3,figsize=(15,15));
 
 lon, lat = np.meshgrid(lon, lat)
 
-cmap_whole = plt.cm.get_cmap('Spectral')
+cmap_whole = plt.cm.get_cmap('viridis_r')
 cmap55 = cmap_whole(0.01)   
 cmap50 = cmap_whole(0.05)
 cmap45 = cmap_whole(0.1)
@@ -117,6 +135,10 @@ cmap_50 = cmap_whole(0.95)
 cmap_55 = cmap_whole(0.99)
 
 cmap = mpl.colors.ListedColormap([cmap_55,cmap_40,cmap_25,cmap_10,cmap10,cmap25,cmap40,cmap55], N=8)  
+
+values = [270,275,280,285,290,295,300,305,310]
+tick_locs = [270,275,280,285,290,295,300,305,310]
+norm = mpl.colors.BoundaryNorm(values,cmap.N)
 
 parallels = np.arange(-60.,91.,30.);
 meridians = np.arange(-135.,136.,45.);
@@ -148,7 +170,7 @@ for perc,ax in zip(dataset,axes.flat):
     ax.spines['right'].set_color('0.2')
     ax.spines['right'].set_linewidth(0.4)
     ax.yaxis.label.set_color('0.2')
-    h = m.pcolormesh(lon, lat, perc, latlon=True, cmap=cmap, vmin=270, vmax=310, zorder=2)
+    h = m.pcolormesh(lon, lat, perc, latlon=True, cmap=cmap, norm=norm, vmin=270, vmax=310, zorder=2)
     
 f.delaxes(axes[2][1])
 f.delaxes(axes[2][2])
@@ -157,10 +179,6 @@ f.delaxes(axes[2][2])
 #COLORBAR
 #=============================================================================
 
-values = [270,275,280,285,290,295,300,305,310]
-tick_locs = [270,275,280,285,290,295,300,305,310]
-
-norm = mpl.colors.BoundaryNorm(values,cmap.N)
 cbaxes = f.add_axes([0.25, 0.225, 0.5, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes, cmap=cmap,
                                norm=norm,
@@ -180,7 +198,7 @@ plt.subplots_adjust(left=0.15, right=0.85, bottom=0.25, top=0.6, wspace=0.1, hsp
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_mixlayertemp_percentiles.png',bbox_inches='tight',dpi=500)
+f.savefig(o_directory+'/'+'D511.N.n.x_ERA5-land_lakes_mixedlayertemperature_icedepth_Section_2.4.1_Figure_2.png',bbox_inches='tight',dpi=500)
 
 
 

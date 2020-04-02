@@ -10,7 +10,7 @@ Created on Wed Mar 20 13:18:37 2019
 #SUMMARY
 #==============================================================================
 
-#This script is used to plot era5 mixlayertemp signals (5yr avg future minus 5yr avg hist) for 4 seasons
+#This script is used to plot era5 mixlayertemp signals (10yr avg future minus 10yr avg hist) for 4 seasons
 
 #==============================================================================
 #IMPORT
@@ -39,9 +39,9 @@ tick_font = 11
 #INITIALIZE
 #==============================================================================
 
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/mixlayertemp/signals'
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/mixlayertemp/signals'
 os.chdir(directory)
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/mixlayertemp'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 files = []
 for file in sorted(os.listdir(directory)):
@@ -135,6 +135,10 @@ cmap_55 = cmap_whole(0.99)
 
 cmap = mpl.colors.ListedColormap([cmap_50,cmap_40,cmap_30,cmap_20,cmap_10,cmap_5,cmap0,
                                   cmap5,cmap10,cmap20,cmap30,cmap40,cmap50], N=13)   
+    
+values = [-3,-2.5,-2,-1.5,-1,-0.5,-0.25,0.25,0.5,1,1.5,2,2.5,3]
+tick_locs = [-3,-2,-1,0,1,2,3]
+norm = mpl.colors.BoundaryNorm(values,cmap.N)
 
 #set color of over/under arrows on colorbar
 cmap.set_over(cmap55)
@@ -170,16 +174,12 @@ for season,ax in zip(seasons,axes.flat):
     ax.spines['right'].set_color('0.2')
     ax.spines['right'].set_linewidth(0.4)
     ax.yaxis.label.set_color('0.2')
-    h = m.pcolormesh(lon, lat, season, latlon=True, cmap=cmap, vmin=-3, vmax=3, zorder=2)
+    h = m.pcolormesh(lon, lat, season, latlon=True, cmap=cmap, norm=norm, vmin=-3, vmax=3, zorder=2)
 
 #=============================================================================
 #COLORBAR
 #=============================================================================
     
-values = [-3,-2.5,-2,-1.5,-1,-0.5,-0.25,0.25,0.5,1,1.5,2,2.5,3]
-tick_locs = [-3,-2,-1,0,1,2,3]
-
-norm = mpl.colors.BoundaryNorm(values,cmap.N)
 cbaxes = f.add_axes([0.25, 0.15, 0.5, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes, cmap=cmap,
                                norm=norm,
@@ -215,7 +215,7 @@ plt.subplots_adjust(left=0.15, right=0.85, bottom=0.175, top=0.6, wspace=0.1, hs
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_mixlayertemp_4seasons_signals.png',bbox_inches='tight',dpi=500)
+f.savefig(o_directory+'/'+'D511.N.n.x_ERA5-land_lakes_mixedlayertemperature_icedepth_Section_2.4.2_Figure_1.png',bbox_inches='tight',dpi=500)
 
 
 
