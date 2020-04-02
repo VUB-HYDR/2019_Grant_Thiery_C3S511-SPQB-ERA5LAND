@@ -52,9 +52,9 @@ lats_font = 7
 #INITIALIZE
 #==============================================================================
 
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/depth/percentiles'
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/depth/percentiles'
 
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/icedepth'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 #set directory
 os.chdir(directory)
@@ -73,13 +73,32 @@ sample_da,dead1,dead2 = reader(files[0])
 lat = sample_da.latitude.values
 lon = sample_da.longitude.values
 
-perc1,mean1,std1 = reader(files[0])
-perc5,mean5,std5 = reader(files[2])
-perc10,mean10,std10 = reader(files[1])
-perc50,mean50,std50 = reader(files[3])
-perc90,mean90,std90 = reader(files[4])
-perc95,mean95,std95 = reader(files[5])
-perc99,mean99,std99 = reader(files[6])
+percs = ['_1_','_5_','_10_','_50_','_90_','_95_','_99_']
+
+for file in files:
+    for perc in percs:
+        if perc == '_1_':
+            if perc in file:
+                perc1,mean1,std1 = reader(file)
+        elif perc == '_5_':
+            if perc in file:
+                perc5,mean5,std5 = reader(file)    
+        elif perc == '_10_':
+            if perc in file:
+                perc10,mean10,std10 = reader(file)
+        elif perc == '_50_':
+            if perc in file:
+                perc50,mean50,std50 = reader(file)
+        elif perc == '_90_':
+            if perc in file:
+                perc90,mean90,std90 = reader(file)
+        elif perc == '_95_':
+            if perc in file:
+                perc95,mean95,std95 = reader(file)
+        elif perc == '_99_':
+            if perc in file:
+                perc99,mean99,std99 = reader(file)
+                
 
 letters = ['a)','b)','c)','d)','e)','f)','g)']
 
@@ -122,6 +141,10 @@ cmap = mpl.colors.ListedColormap([cmap_55,cmap_50,cmap_45,cmap_40,cmap_35,cmap_3
     
 cmap.set_over(cmap55)
 
+values = np.arange(0,2.1,0.1)
+tick_locs = np.arange(0,2.2,0.2)
+norm = mpl.colors.BoundaryNorm(values,cmap.N)
+
 #=============================================================================
 #SET PLOTS
 #=============================================================================
@@ -139,7 +162,7 @@ for month,ax in zip(dataset,axes.flatten()):
     m.drawcoastlines(linewidth=0.4);
     m.drawmapboundary(fill_color='whitesmoke');
     m.fillcontinents(color='white');
-    m.pcolormesh(lon,lat,month,latlon=True,cmap=cmap,vmax=2,vmin=0,zorder=3)
+    m.pcolormesh(lon,lat,month,latlon=True,norm=norm,cmap=cmap,vmax=2,vmin=0,zorder=3)
     ax.set_title(metrics[count-1],loc='center',fontsize=title_font)
     ax.set_title(letters[count-1],loc='left',fontsize=title_font)
     
@@ -150,10 +173,6 @@ f.delaxes(axes[2][2])
 #COLORBAR
 #==============================================================================
 
-values = np.arange(0,2.1,0.1)
-tick_locs = np.arange(0,2.2,0.2)
-
-norm = mpl.colors.BoundaryNorm(values,cmap.N)
 cbaxes = f.add_axes([0.2515, 0.225, 0.5, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes,cmap=cmap,
                                norm=norm,
@@ -175,7 +194,7 @@ plt.subplots_adjust(left=0.25, right=0.75, bottom=0.25, top=0.8, wspace=0.05, hs
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_icedepth_depth_percentiles_2001_2019.png',bbox_inches='tight',dpi=500)
+f.savefig(o_directory+'/'+'C3S_D511_ERA5-land_lakes_mixedlayertemperature_icedepth_Figure_2.4.5.png',bbox_inches='tight',dpi=500)
 
 
 

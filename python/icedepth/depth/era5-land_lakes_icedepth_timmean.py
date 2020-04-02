@@ -48,9 +48,9 @@ lats_font = 7
 #INITIALIZE
 #==============================================================================
 
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/depth/timmean'
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/depth/timmean'
 
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/icedepth'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 #set directory
 os.chdir(directory)
@@ -118,6 +118,10 @@ cmap = mpl.colors.ListedColormap([cmap_55,cmap_50,cmap_45,cmap_40,cmap_35,cmap_3
     
 cmap.set_over(cmap55)
 
+values = np.arange(0,2.1,0.1)
+tick_locs = np.arange(0,2.2,0.2)
+norm = mpl.colors.BoundaryNorm(values,cmap.N)
+
 #=============================================================================
 #SET PLOTS
 #=============================================================================
@@ -135,17 +139,13 @@ for month,ax in zip(dataset,axes.flatten()):
     m.drawcoastlines(linewidth=0.4);
     m.drawmapboundary(fill_color='whitesmoke');
     m.fillcontinents(color='white');
-    m.pcolormesh(lon,lat,month,latlon=True,cmap=cmap,vmax=2,vmin=0,zorder=3)
+    m.pcolormesh(lon,lat,month,latlon=True,cmap=cmap,norm=norm,vmax=2,vmin=0,zorder=3)
     ax.set_title(months[count-1],loc='left',fontsize=title_font)
 
 #==============================================================================
 #COLORBAR
 #==============================================================================
 
-values = np.arange(0,2.1,0.1)
-tick_locs = np.arange(0,2.2,0.2)
-
-norm = mpl.colors.BoundaryNorm(values,cmap.N)
 cbaxes = f.add_axes([0.2515, 0.165, 0.5, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes,cmap=cmap,
                                norm=norm,
@@ -167,7 +167,7 @@ plt.subplots_adjust(left=0.25, right=0.75, bottom=0.2, top=0.85, wspace=0.05, hs
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_icedepth_depth_monthly_timmean_2001_2018.png',bbox_inches='tight',dpi=500 )
+f.savefig(o_directory+'/'+'C3S_D511_ERA5-land_lakes_mixedlayertemperature_icedepth_Figure_2.4.4.png',bbox_inches='tight',dpi=500 )
 
 
 
