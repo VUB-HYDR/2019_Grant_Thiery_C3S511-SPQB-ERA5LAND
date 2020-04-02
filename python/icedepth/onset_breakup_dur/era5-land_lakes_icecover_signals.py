@@ -53,12 +53,9 @@ lats_font = 7
 #INITIALIZE DIRECTORIES
 #==============================================================================
 
-#output directory
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/icedepth'
-
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/cover/signals'
-
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/cover/signals'
 os.chdir(directory)
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 files = []
 for file in sorted(os.listdir(directory)):
@@ -133,6 +130,12 @@ cmap = mpl.colors.ListedColormap([cmap_50,cmap_40,cmap_35,cmap_30,cmap_25,cmap_2
 cmap.set_over(cmap55)
 cmap.set_under(cmap_55)
 
+values = [-30,-25,-20,-15,-10,-5,-1,1,5,10,15,20,25,30]
+
+tick_locs = [-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30]
+
+norm = mpl.colors.BoundaryNorm(values,cmap.N,clip=True)
+
 #=============================================================================
 #SET PLOTS
 #=============================================================================
@@ -156,7 +159,7 @@ for rcpmap,ax in zip(signals,axes.flatten()):
     m.drawparallels(parallels,linewidth=0.1,color='0.75')
     for i in np.arange(len(parallels[:-1])):
         ax.annotate(parallels_lbs[i],xy=m(342.5,parallels[i]),fontsize=lats_font)
-    m.pcolormesh(lon,lat,rcpmap,latlon=True,cmap=cmap,vmax=30,vmin=-30,zorder=3)
+    m.pcolormesh(lon,lat,rcpmap,latlon=True,cmap=cmap,norm=norm,vmax=30,vmin=-30,zorder=3)
     if count<=3:
         ax.set_title(ice_titles[count-1],loc='center',fontsize=title_font)
         ax.set_title(letters[count-1],loc='left',fontsize=title_font)
@@ -166,11 +169,6 @@ for rcpmap,ax in zip(signals,axes.flatten()):
 #COLORBAR
 #==============================================================================
         
-values = [-30,-25,-20,-15,-10,-5,-1,1,5,10,15,20,25,30]
-
-tick_locs = [-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30]
-
-norm = mpl.colors.BoundaryNorm(values,cmap.N,clip=True)
 cbaxes = f.add_axes([0.215, 0.35, 0.6, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes,cmap=cmap,
                                norm=norm,
@@ -206,7 +204,7 @@ plt.subplots_adjust(left=0.175, right=0.85, bottom=0.2, top=0.875, wspace=0.03, 
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_icedepth_icecover_signals.png',bbox_inches='tight',dpi=900 )
+f.savefig(o_directory+'/'+'D511.N.n.x_ERA5-land_lakes_mixedlayertemperature_icedepth_Section_2.4.2_Figure_3.png',bbox_inches='tight',dpi=900 )
 
 
 

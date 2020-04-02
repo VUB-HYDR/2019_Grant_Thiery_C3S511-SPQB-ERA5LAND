@@ -52,12 +52,12 @@ lats_font = 7
 #==============================================================================
 
 #output directory
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/icedepth'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 #data
-startfile = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/cover/timmean/era5-land_lakes_icecover_start_global_timmean_2001_2018.nc'
-endfile = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/cover/timmean/era5-land_lakes_icecover_end_global_timmean_2001_2018.nc'
-durfile = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/cover/timmean/era5-land_lakes_icecover_duration_global_timmean_2001_2018.nc'
+startfile = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/cover/timmean/era5-land_lakes_icecover_start_global_timmean_1981_2018.nc'
+endfile = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/cover/timmean/era5-land_lakes_icecover_end_global_timmean_1981_2018.nc'
+durfile = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/cover/timmean/era5-land_lakes_icecover_duration_global_timmean_1981_2018.nc'
 
 
 #==============================================================================
@@ -127,6 +127,12 @@ cmap_55 = cmap_whole(0.99)
 
 cmap_dur = mpl.colors.ListedColormap([cmap50, cmap40, cmap35, cmap20, cmap10, cmap0,
                                    cmap_10, cmap_20, cmap_35, cmap_40, cmap_50, cmap_55], N=12)
+    
+values = np.arange(240,610,10)
+
+ticks = np.arange(240,610,30)
+
+norm = mpl.colors.BoundaryNorm(values,cmap.N)
 
     
 #=============================================================================
@@ -159,9 +165,6 @@ for i in np.arange(len(parallels[:-1])):
 m.pcolormesh(lon, lat, start_plottable, latlon=True, cmap=cmap, vmax=610, vmin=245, zorder=3)
 
 #setup colorbar
-values = np.arange(240,610,10)
-ticks = np.arange(240,610,30)
-norm = mpl.colors.BoundaryNorm(values,cmap.N)
 cbaxes = f.add_axes([0.1325, 0.315, 0.5, 0.015])
 cb = mpl.colorbar.ColorbarBase(ax=cbaxes, cmap=cmap,
                                norm=norm,
@@ -198,6 +201,9 @@ m2.pcolormesh(lon, lat, end_plottable, latlon=True, cmap=cmap, vmax=610, vmin=24
 #ICE DUR
 #=============================================================================
 
+values3 = [0,30,60,90,120,150,180,210,240,270,300,330,360]
+norm3 = mpl.colors.BoundaryNorm(values3,cmap_dur.N)
+
 m3 = Basemap(projection='npaeqd',round=True,boundinglat=20,lat_0=90,lon_0=0,resolution='l');
 m3.ax = ax3
 ax3.set_title('c)',fontsize=title_font,loc='left')
@@ -214,8 +220,6 @@ m3.pcolormesh(lon, lat, dur_plottable, latlon=True, cmap=cmap_dur, vmax=360,vmin
 #COLORBAR
 #=============================================================================
 
-values3 = [0,30,60,90,120,150,180,210,240,270,300,330,360]
-norm3 = mpl.colors.BoundaryNorm(values3,cmap_dur.N)
 cbaxes3 = f.add_axes([0.9175, 0.3595, 0.014, 0.275])
 cb3 = mpl.colorbar.ColorbarBase(ax=cbaxes3, cmap=cmap_dur,
                                norm=norm3,
@@ -233,4 +237,4 @@ plt.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.9, wspace=0.03, hsp
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_icedepth_icecover_timmeans.png',bbox_inches='tight',dpi=500)
+f.savefig(o_directory+'/'+'D511.N.n.x_ERA5-land_lakes_mixedlayertemperature_icedepth_Section_2.4.1_Figure_7.png',bbox_inches='tight',dpi=500)

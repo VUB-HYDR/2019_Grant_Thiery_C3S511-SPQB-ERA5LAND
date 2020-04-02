@@ -54,9 +54,9 @@ tick_font = 11
 #INITIALIZE
 #==============================================================================
 
-directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/icedepth/cover/timmean'
+directory = '/Users/Luke/Documents/PHD/C3S_511/DATA/era5-land/04_2020/icedepth/cover/timmean'
 os.chdir(directory)
-o_directory = '/Users/Luke/Documents/PHD/C3S_511/FIGURES/era5-land/icedepth'
+o_directory = '/Users/Luke/Documents/PHD/C3S_511/SPQB/04_2020/era5-land'
 
 files = []
 for file in sorted(os.listdir(directory)):
@@ -131,6 +131,6 @@ f.text(0.075, 0.5, 'Latitude', va='center', rotation='vertical', fontsize=title_
 plt.show()
 
 #save figure
-f.savefig(o_directory+'/'+'era5-land_lakes_icedepth_cover_fliphist.png',bbox_inches='tight',dpi=500)
+f.savefig(o_directory+'/'+'D511.N.n.x_ERA5-land_lakes_mixedlayertemperature_icedepth_Section_2.4.1_Figure_8.png',bbox_inches='tight',dpi=500)
 
 
