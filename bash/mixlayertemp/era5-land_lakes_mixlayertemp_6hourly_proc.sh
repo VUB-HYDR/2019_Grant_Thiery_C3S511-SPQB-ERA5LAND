@@ -49,51 +49,51 @@ for YEAR in "${YEARs[@]}"; do
 
 done
 
-cdo -b F64 mergetime $scratchDIR/startfile_*.nc $scratchDIR/mixlayertemp_1981_2018_unmasked.nc
+cdo -b F64 mergetime $scratchDIR/startfile_*.nc $scratchDIR/mixlayertemp_1981_2019_unmasked.nc
 
 rm $scratchDIR/startfile_*.nc
 
 # mask starting file
-cdo ifthen $maskDIR/era5-land_lakemask.nc $scratchDIR/mixlayertemp_1981_2018_unmasked.nc $scratchDIR/mixlayertemp_monthly_1981_2018.nc
+cdo ifthen $maskDIR/era5-land_lakemask.nc $scratchDIR/mixlayertemp_1981_2019_unmasked.nc $scratchDIR/mixlayertemp_monthly_1981_2019.nc
 
-rm $scratchDIR/mixlayertemp_1981_2018_unmasked.nc
+rm $scratchDIR/mixlayertemp_1981_2019_unmasked.nc
 
 
 # seasonal files to operate on
-cdo -b F64 -O -L yearmean -selmon,12,1,2 $scratchDIR/mixlayertemp_monthly_1981_2018.nc $scratchDIR/mixlayertemp_DJF_1981_2018.nc
-cdo -b F64 -O -L yearmean -selmon,3/5 $scratchDIR/mixlayertemp_monthly_1981_2018.nc $scratchDIR/mixlayertemp_MAM_1981_2018.nc
-cdo -b F64 -O -L yearmean -selmon,6/8 $scratchDIR/mixlayertemp_monthly_1981_2018.nc $scratchDIR/mixlayertemp_JJA_1981_2018.nc
-cdo -b F64 -O -L yearmean -selmon,9/11 $scratchDIR/mixlayertemp_monthly_1981_2018.nc $scratchDIR/mixlayertemp_SON_1981_2018.nc
+cdo -b F64 -O -L yearmean -selmon,12,1,2 $scratchDIR/mixlayertemp_monthly_1981_2019.nc $scratchDIR/mixlayertemp_DJF_1981_2019.nc
+cdo -b F64 -O -L yearmean -selmon,3/5 $scratchDIR/mixlayertemp_monthly_1981_2019.nc $scratchDIR/mixlayertemp_MAM_1981_2019.nc
+cdo -b F64 -O -L yearmean -selmon,6/8 $scratchDIR/mixlayertemp_monthly_1981_2019.nc $scratchDIR/mixlayertemp_JJA_1981_2019.nc
+cdo -b F64 -O -L yearmean -selmon,9/11 $scratchDIR/mixlayertemp_monthly_1981_2019.nc $scratchDIR/mixlayertemp_SON_1981_2019.nc
 
 
 # global annual mean time series
-cdo -b F64 -O -L fldmean -yearmonmean $scratchDIR/mixlayertemp_monthly_1981_2018.nc $outDIR/era5-land_lakes_mixlayertemp_global_annual_fldmean_1981_2018.nc
+cdo -b F64 -O -L fldmean -yearmonmean $scratchDIR/mixlayertemp_monthly_1981_2019.nc $outDIR/era5-land_lakes_mixlayertemp_global_annual_fldmean_1981_2019.nc
 
 # calculate diagnostics
 for SEASON in "${SEASONs[@]}"; do
 
     # global mean time series for seasons
-    cdo -b F64 -O fldmean $scratchDIR/mixlayertemp_${SEASON}_1981_2018.nc $outDIR/fldmean/era5-land_lakes_mixlayertemp_${SEASON}_global_annual_fldmean_1981_2018.nc
+    cdo -b F64 -O fldmean $scratchDIR/mixlayertemp_${SEASON}_1981_2019.nc $outDIR/fldmean/era5-land_lakes_mixlayertemp_${SEASON}_global_annual_fldmean_1981_2019.nc
 
     # temporal mean for seasonal average maps
-    cdo -b F64 -O timmean $scratchDIR/mixlayertemp_${SEASON}_1981_2018.nc $outDIR/timmean/era5-land_lakes_mixlayertemp_${SEASON}_timmean_1981_2018.nc
+    cdo -b F64 -O timmean $scratchDIR/mixlayertemp_${SEASON}_1981_2019.nc $outDIR/timmean/era5-land_lakes_mixlayertemp_${SEASON}_timmean_1981_2019.nc
 
     # signal for seasonal average maps (first 5 years)
-    cdo -b F64 -O -L timmean -seldate,1981-01-01T00:00:00,1990-12-31T00:00:00 $scratchDIR/mixlayertemp_${SEASON}_1981_2018.nc $scratchDIR/mixlayertemp_${SEASON}_10year_start.nc
+    cdo -b F64 -O -L timmean -seldate,1981-01-01T00:00:00,1990-12-31T00:00:00 $scratchDIR/mixlayertemp_${SEASON}_1981_2019.nc $scratchDIR/mixlayertemp_${SEASON}_10year_start.nc
 
     # signal for seasonal average maps (last 5 years)
-    cdo -b F64 -O -L timmean -seldate,2009-01-01T00:00:00,2018-12-31T00:00:00 $scratchDIR/mixlayertemp_${SEASON}_1981_2018.nc $scratchDIR/mixlayertemp_${SEASON}_10year_end.nc
+    cdo -b F64 -O -L timmean -seldate,2010-01-01T00:00:00,2019-12-31T00:00:00 $scratchDIR/mixlayertemp_${SEASON}_1981_2019.nc $scratchDIR/mixlayertemp_${SEASON}_10year_end.nc
 
     #signal for seasonal average maps (diff)
-    cdo -b F64 -O sub $scratchDIR/mixlayertemp_${SEASON}_10year_end.nc $scratchDIR/mixlayertemp_${SEASON}_10year_start.nc $outDIR/signals/era5-land_lakes_mixlayertemp_${SEASON}_signal_1981_2018.nc
+    cdo -b F64 -O sub $scratchDIR/mixlayertemp_${SEASON}_10year_end.nc $scratchDIR/mixlayertemp_${SEASON}_10year_start.nc $outDIR/signals/era5-land_lakes_mixlayertemp_${SEASON}_signal_1981_2019.nc
 
     # remove temporary files per season
-    rm $scratchDIR/mixlayertemp_${SEASON}_1981_2018.nc
+    rm $scratchDIR/mixlayertemp_${SEASON}_1981_2019.nc
     rm $scratchDIR/mixlayertemp_${SEASON}_10year_end.nc
     rm $scratchDIR/mixlayertemp_${SEASON}_10year_start.nc
 
 done
 
 
-rm $scratchDIR/mixlayertemp_monthly_1981_2018.nc
+rm $scratchDIR/mixlayertemp_monthly_1981_2019.nc
 
