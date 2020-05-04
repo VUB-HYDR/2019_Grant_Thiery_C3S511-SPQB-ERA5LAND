@@ -8,7 +8,7 @@
     # masking for inland water bodies
     # selection of seasonal averages: 1) temporal average (spatial plots per season) and 2) global/annual means (time series per season)
     # global/annual means on monthly series for time series
-    # seasonal signals (between two 5-year means)
+    # seasonal signals (between two 10-year means)
 
 # =======================================================================
 # INITIALIZATION
