@@ -59,14 +59,14 @@ for YEAR in "${YEARs[@]}"; do
 
 done
 
-cdo -b F64 mergetime $scratchDIR/startfile_*.nc $scratchDIR/icedepth_1981_2018_unmasked.nc
+cdo -b F64 mergetime $scratchDIR/startfile_*.nc $scratchDIR/icedepth_1981_2019_unmasked.nc
 
 rm $scratchDIR/startfile_*.nc
 
 # mask starting file
-cdo ifthen $maskDIR/era5-land_lakemask.nc $scratchDIR/icedepth_1981_2018_unmasked.nc $scratchDIR/icedepth_monthly_1981_2018.nc
+cdo ifthen $maskDIR/era5-land_lakemask.nc $scratchDIR/icedepth_1981_2019_unmasked.nc $scratchDIR/icedepth_monthly_1981_2019.nc
 
-rm $scratchDIR/icedepth_1981_2018_unmasked.nc
+rm $scratchDIR/icedepth_1981_2019_unmasked.nc
 
 # ==============================================================================
 # TIMMEANS & FLDMEANS
@@ -80,7 +80,7 @@ echo ' '
 
 for i in $(seq 0 11); do
 
-    cdo -b F64 -O -L timmean -selmon,$(($i+1)) -seldate,1981-01-01T00:00:00,2018-12-31T00:00:00 $scratchDIR/icedepth_monthly_1981_2018.nc $outDIR/timmean/era5-land_lakes_icedepth_timmean_${MONTHs[$i]}_1981_2018.nc
+    cdo -b F64 -O -L timmean -selmon,$(($i+1)) -seldate,1981-01-01T00:00:00,2019-12-31T00:00:00 $scratchDIR/icedepth_monthly_1981_2019.nc $outDIR/timmean/era5-land_lakes_icedepth_timmean_${MONTHs[$i]}_1981_2019.nc
 
 done
 
@@ -110,16 +110,16 @@ echo ' '
 for i in $(seq 0 11); do
 
     # signal (first 5 years)
-    cdo -b F64 -O -L timmean -seldate,1981-01-01T00:00:00,1990-12-31T00:00:00 -selmon,$(($i+1)) $scratchDIR/icedepth_monthly_1981_2018.nc $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_1981_1990_10year.nc
+    cdo -b F64 -O -L timmean -seldate,1981-01-01T00:00:00,1990-12-31T00:00:00 -selmon,$(($i+1)) $scratchDIR/icedepth_monthly_1981_2019.nc $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_1981_1990_10year.nc
 
     # signal (last 5 years)
-    cdo -b F64 -O -L timmean -seldate,2009-01-01T00:00:00,2018-12-31T00:00:00 -selmon,$(($i+1)) $scratchDIR/icedepth_monthly_1981_2018.nc $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_2009_2018_10year.nc
+    cdo -b F64 -O -L timmean -seldate,2009-01-01T00:00:00,2019-12-31T00:00:00 -selmon,$(($i+1)) $scratchDIR/icedepth_monthly_1981_2019.nc $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_2009_2019_10year.nc
 
     #signal (diff)
-    cdo -b F64 -O -L sub $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_2009_2018_10year.nc $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_1981_1990_10year.nc $outDIR/signals/era5-land_lakes_icedepth_signal_${MONTHs[$i]}_1981_2018.nc
+    cdo -b F64 -O -L sub $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_2009_2019_10year.nc $scratchDIR/era5-land_lakes_icedepth_${MONTHs[$i]}_1981_1990_10year.nc $outDIR/signals/era5-land_lakes_icedepth_signal_${MONTHs[$i]}_1981_2019.nc
 
 done
 
 rm $scratchDIR/era5-land_lakes*.nc
 
-rm $scratchDIR/icedepth_monthly_1981_2018.nc
+rm $scratchDIR/icedepth_monthly_1981_2019.nc
