@@ -93,7 +93,7 @@ echo ' '
 
 for i in $(seq 0 11); do
 
-    cdo -b F64 -O -L fldmean -selmon,$(($i+1)) -seldate,1981-01-01T00:00:00,2018-12-31T00:00:00 $scratchDIR/icedepth_monthly_1981_2018.nc $outDIR/fldmean/era5-land_lakes_icedepth_fldmean_${MONTHs[$i]}_1981_2018.nc
+    cdo -b F64 -O -L fldmean -selmon,$(($i+1)) -seldate,1981-01-01T00:00:00,2019-12-31T00:00:00 $scratchDIR/icedepth_monthly_1981_2019.nc $outDIR/fldmean/era5-land_lakes_icedepth_fldmean_${MONTHs[$i]}_1981_2019.nc
 
 done
 
