@@ -57,14 +57,14 @@ for YEAR in "${YEARs[@]}"; do
 
 done
 
-cdo -b F64 mergetime $scratchDIR/startfile_*.nc $scratchDIR/icedepth_1981_2018_unmasked.nc
+cdo -b F64 mergetime $scratchDIR/startfile_*.nc $scratchDIR/icedepth_1981_2019_unmasked.nc
 
 rm $scratchDIR/startfile_*.nc
 
 # mask starting file
-cdo ifthen $maskDIR/era5-land_lakemask.nc $scratchDIR/icedepth_1981_2018_unmasked.nc $scratchDIR/icedepth_daily_1981_2018.nc
+cdo ifthen $maskDIR/era5-land_lakemask.nc $scratchDIR/icedepth_1981_2019_unmasked.nc $scratchDIR/icedepth_daily_1981_2019.nc
 
-rm $scratchDIR/icedepth_1981_2018_unmasked.nc
+rm $scratchDIR/icedepth_1981_2019_unmasked.nc
 
 # ==============================================================================
 # PERCENTILE BOUNDS
@@ -76,10 +76,10 @@ echo 'BOUNDS CALC'
 echo ' '
 
 
-cdo timmin $scratchDIR/icedepth_daily_1981_2018.nc $scratchDIR/minfile.nc
+cdo timmin $scratchDIR/icedepth_daily_1981_2019.nc $scratchDIR/minfile.nc
 
 
-cdo timmax $scratchDIR/icedepth_daily_1981_2018.nc $scratchDIR/maxfile.nc
+cdo timmax $scratchDIR/icedepth_daily_1981_2019.nc $scratchDIR/maxfile.nc
 
 # ==============================================================================
 # PERCENTILES
@@ -93,15 +93,15 @@ echo ' '
 
 for PERC in "${PERCENTs[@]}"; do
 
-    cdo -b F64 -O -L timpctl,$((${PERC}+0)) $scratchDIR/icedepth_daily_1981_2018.nc $scratchDIR/minfile.nc $scratchDIR/maxfile.nc $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}_1981_2018.nc
+    cdo -b F64 -O -L timpctl,$((${PERC}+0)) $scratchDIR/icedepth_daily_1981_2019.nc $scratchDIR/minfile.nc $scratchDIR/maxfile.nc $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}_1981_2019.nc
 
-    cdo -b F64 -O -L fldmean $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}.nc $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}_fldmean_1981_2018.nc
+    cdo -b F64 -O -L fldmean $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}.nc $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}_fldmean_1981_2019.nc
 
-    cdo -b F64 -O -L fldstd $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}.nc $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}_fldstd_1981_2018.nc
+    cdo -b F64 -O -L fldstd $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}.nc $outDIR/percentiles/era5-land_lakes_icedepth_percentile_${PERC}_fldstd_1981_2019.nc
 
 done
 
 
-rm $scratchDIR/icedepth_daily_1981_2018.nc
+rm $scratchDIR/icedepth_daily_1981_2019.nc
 rm $scratchDIR/minfile.nc
 rm $scratchDIR/maxfile.nc
