@@ -8,14 +8,14 @@
     # daily aggregation & file merging
     # calculation of ice start/end/duration and timmeans
     # fldmeans of ice start/end/duration
-    # signals between two 5-year means
+    # signals between two 10-year means
 
 # =======================================================================
 # INITIALIZATION
 # =======================================================================
 
 # set output directory
-outDIR=/theia/data/brussel/101/vsc10116/C3S_511/era5-land/icedepth/cover
+outDIR=/theia/data/brussel/101/vsc10116/C3S_511/era5-land_v2/icedepth/cover
 
 # user scratch directory
 scratchDIR=/theia/scratch/projects/climate/users/lgrant/era5-land/proc/icecover
@@ -91,7 +91,7 @@ cdo -b F64 mergetime $scratchDIR/icecover_daily_1981_2019_part1.nc $scratchDIR/i
 rm $scratchDIR/icecover_daily_1981_2019_part*.nc
 
 
-for i in $(seq 1981 2017); do
+for i in $(seq 1981 2018); do
 
     # ice start
     cdo -b F64 -O -L timmin -seldate,$i-10-01T00:00:00,$(($i+1))-09-31T00:00:00 $scratchDIR/dummy_final.nc $scratchDIR/dummy_start_$i.nc
@@ -102,13 +102,13 @@ done
 rm $scratchDIR/dummy_final.nc
 
 
-cdo -b F64 -O mergetime $scratchDIR/dummy_start_*.nc
+cdo -b F64 -O mergetime $scratchDIR/dummy_start_*.nc $scratchDIR/icecover_start_1981_2019_dummy.nc
 
 
 rm $scratchDIR/dummy_start_*.nc
 
 
-cdo -b F64 -O -L setreftime,1981-01-01,00:00:00,1years -settaxis,1981-01-01,00:00:00,1years -setattribute,icestart@long_name='First day of lake ice cover' -setname,'icestart' -setunit,"day of hydrological year" $scratchDIR/icecover_start_1981_2018_dummy.nc $outDIR/era5-land_lakes_icecover_start_1981_2018.nc
+cdo -b F64 -O -L setreftime,1981-01-01,00:00:00,1years -settaxis,1981-01-01,00:00:00,1years -setattribute,icestart@long_name='First day of lake ice cover' -setname,'icestart' -setunit,"day of hydrological year" $scratchDIR/icecover_start_1981_2019_dummy.nc $outDIR/era5-land_lakes_icecover_start_1981_2019.nc
 
 
 # signal (first 10 years)
@@ -169,7 +169,7 @@ cdo -b F64 -O mergetime $scratchDIR/dummy_end_*.nc $scratchDIR/icecover_end_1981
 rm $scratchDIR/dummy_end_*.nc
 
 
-cdo -b F64 -O -L setreftime,1981-01-01,00:00:00,1years -settaxis,1981-01-01,00:00:00,1years -setattribute,iceend@long_name='Last day of lake ice cover' -setname,'iceend' -setunit,"day of hydrological year" $scratchDIR/icecover_end_1981_2018_dummy.nc $outDIR/era5-land_lakes_icecover_end_1981_2018.nc
+cdo -b F64 -O -L setreftime,1981-01-01,00:00:00,1years -settaxis,1981-01-01,00:00:00,1years -setattribute,iceend@long_name='Last day of lake ice cover' -setname,'iceend' -setunit,"day of hydrological year" $scratchDIR/icecover_end_1981_2019_dummy.nc $outDIR/era5-land_lakes_icecover_end_1981_2019.nc
 
 
 # signal (first 5 years)
@@ -212,19 +212,19 @@ cdo -b F64 mergetime $scratchDIR/dummy_duration_*.nc $scratchDIR/icecover_durati
 rm $scratchDIR/dummy_duration_*.nc
 
 
-cdo -b F64 -O -L setctomiss,0 -setreftime,1981-01-01,00:00:00,1years -settaxis,1981-01-01,00:00:00,1years -setattribute,iceduration@long_name='Days of lake ice cover' -setname,'iceduration' -setunit,"days" $scratchDIR/icecover_duration_1981_2018_dummy.nc $outDIR/era5-land_lakes_icecover_duration_1981_2018.nc
+cdo -b F64 -O -L setctomiss,0 -setreftime,1981-01-01,00:00:00,1years -settaxis,1981-01-01,00:00:00,1years -setattribute,iceduration@long_name='Days of lake ice cover' -setname,'iceduration' -setunit,"days" $scratchDIR/icecover_duration_1981_2019_dummy.nc $outDIR/era5-land_lakes_icecover_duration_1981_2019.nc
 
 
-# signal (first 5 years)
+# signal (first 10 years)
 cdo -b F64 -O -L timmean -seldate,1981-01-01T00:00:00,1990-12-31T00:00:00 $outDIR/era5-land_lakes_icecover_duration_1981_2019.nc $scratchDIR/era5-land_lakes_icecover_dur_1981_1990_10year.nc
 
 
-# signal (last 5 years)
+# signal (last 10 years)
 cdo -b F64 -O -L timmean -seldate,2010-01-01T00:00:00,2019-12-31T00:00:00 $outDIR/era5-land_lakes_icecover_duration_1981_2019.nc $scratchDIR/era5-land_lakes_icecover_dur_2010_2019_10year.nc
 
 
 #signal (diff)
-cdo -b F64 -O -L sub $scratchDIR/era5-land_lakes_icecover_dur_2009_2019_10year.nc $scratchDIR/era5-land_lakes_icecover_dur_1981_1990_10year.nc $outDIR/signals/era5-land_lakes_icecover_dur_signal_1981_2019.nc
+cdo -b F64 -O -L sub $scratchDIR/era5-land_lakes_icecover_dur_2010_2019_10year.nc $scratchDIR/era5-land_lakes_icecover_dur_1981_1990_10year.nc $outDIR/signals/era5-land_lakes_icecover_dur_signal_1981_2019.nc
 
 
 rm $scratchDIR/era5-land_lakes_icecover_dur_1981_1990_10year.nc
